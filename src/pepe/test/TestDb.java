@@ -1,7 +1,5 @@
 package pepe.test;
 
-import java.util.Date;
-
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -19,11 +17,6 @@ public class TestDb {
 		Session session = factory.getCurrentSession();
 		
 		try {
-			
-			Date data = new Date();
-			Match tempMatch = new Match(1, 2, 1, 1, null, "12:00", "Gil P", 1.66, 3.60, 5.25);
-			
-			System.out.println(tempMatch.toString());
 			
 			//start a transaction
 			session.beginTransaction();

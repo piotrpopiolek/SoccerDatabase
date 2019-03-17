@@ -10,13 +10,16 @@ import org.hibernate.cfg.Configuration;
 
 import pepe.entity.City;
 import pepe.entity.Country;
+import pepe.entity.League;
 import pepe.entity.Match;
 import pepe.entity.Nationality;
 import pepe.entity.Player;
 import pepe.entity.Position;
+import pepe.entity.Season;
 import pepe.entity.Team;
+import pepe.entity.TeamLeagueSeason;
 
-public class CreateDemoPlayer {
+public class CreateDemoTeamLeagueSeason {
 
 	public static void main(String[] args) {
 		SessionFactory factory = new Configuration()
@@ -28,54 +31,34 @@ public class CreateDemoPlayer {
 				.addAnnotatedClass(Nationality.class)
 				.addAnnotatedClass(Position.class)
 				.addAnnotatedClass(Player.class)
+				.addAnnotatedClass(Season.class)
+				.addAnnotatedClass(League.class)
+				.addAnnotatedClass(TeamLeagueSeason.class)
 				.buildSessionFactory();
 		
 		Session session = factory.getCurrentSession();
 		
 		try {
 			
-			SimpleDateFormat dateformat = new SimpleDateFormat("dd/MM/yyyy");
-			
-			Date datePlayer1 = new Date();
-			
-			try {
-				datePlayer1 = dateformat.parse("17/07/1990");
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
-			
-			Player player1 = new Player("Robert", "Lewandowski", datePlayer1);
-			Player player2 = new Player("Jan", "Bednarek", datePlayer1);
-			
-			System.out.println(player1.toString());
-			
 			//start a transaction
 			session.beginTransaction();
 			
-			int theId = 13;
-			City monachium = session.get(City.class, theId);
+			int theId = 10;
+			Team team = session.get(Team.class, theId);
 			
 			int theIdN = 1;
-			Nationality polish = session.get(Nationality.class, theIdN);
+			Season season = session.get(Season.class, theIdN);
 			
-			int theIdP = 5;
-			Position position = session.get(Position.class, theIdP);
+			int theIdP = 2;
+			League league = session.get(League.class, theIdP);
 			
-			int theIdT = 10;
-			Team team = session.get(Team.class, theIdT);
+			TeamLeagueSeason teamLeagueSeason = new TeamLeagueSeason(team, season, league);
 			
-			player1.setCity(monachium);
-			player1.setNationality(polish);
-			player1.setPosition(position);
-			player1.setTeam(team);
+			teamLeagueSeason.setTeam(team);
+			teamLeagueSeason.setSeason(season);
+			teamLeagueSeason.setLeague(league);	
 			
-			player2.setCity(monachium);
-			player2.setNationality(polish);
-			player2.setPosition(position);
-			player2.setTeam(team);
-			
-			session.save(player1);
-			session.save(player2);
+			session.save(teamLeagueSeason);
 			
 			//commit transaction
 			session.getTransaction().commit();

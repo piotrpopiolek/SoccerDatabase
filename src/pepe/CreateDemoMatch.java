@@ -10,24 +10,30 @@ import org.hibernate.cfg.Configuration;
 
 import pepe.entity.City;
 import pepe.entity.Country;
+import pepe.entity.League;
 import pepe.entity.Match;
 import pepe.entity.Nationality;
 import pepe.entity.Player;
 import pepe.entity.Position;
+import pepe.entity.Season;
 import pepe.entity.Team;
+import pepe.entity.TeamLeagueSeason;
 
-public class CreateDemoPlayer {
+public class CreateDemoMatch {
 
 	public static void main(String[] args) {
 		SessionFactory factory = new Configuration()
 				.configure("hibernate.cfg.xml")
-				.addAnnotatedClass(Match.class)
 				.addAnnotatedClass(Country.class)
 				.addAnnotatedClass(City.class)
 				.addAnnotatedClass(Team.class)
 				.addAnnotatedClass(Nationality.class)
 				.addAnnotatedClass(Position.class)
 				.addAnnotatedClass(Player.class)
+				.addAnnotatedClass(Match.class)
+				.addAnnotatedClass(Season.class)
+				.addAnnotatedClass(League.class)
+				.addAnnotatedClass(TeamLeagueSeason.class)
 				.buildSessionFactory();
 		
 		Session session = factory.getCurrentSession();
@@ -36,46 +42,43 @@ public class CreateDemoPlayer {
 			
 			SimpleDateFormat dateformat = new SimpleDateFormat("dd/MM/yyyy");
 			
-			Date datePlayer1 = new Date();
+			Date date = new Date();
 			
 			try {
-				datePlayer1 = dateformat.parse("17/07/1990");
+				date = dateformat.parse("17/07/2019");
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
 			
-			Player player1 = new Player("Robert", "Lewandowski", datePlayer1);
-			Player player2 = new Player("Jan", "Bednarek", datePlayer1);
-			
-			System.out.println(player1.toString());
-			
 			//start a transaction
 			session.beginTransaction();
 			
-			int theId = 13;
-			City monachium = session.get(City.class, theId);
+			/*
+			 * int theId = 1; Match matchtest = session.get(Match.class, theId);
+			 */
 			
-			int theIdN = 1;
-			Nationality polish = session.get(Nationality.class, theIdN);
+			//System.out.println(matchtest.toString());
 			
-			int theIdP = 5;
-			Position position = session.get(Position.class, theIdP);
 			
-			int theIdT = 10;
-			Team team = session.get(Team.class, theIdT);
-			
-			player1.setCity(monachium);
-			player1.setNationality(polish);
-			player1.setPosition(position);
-			player1.setTeam(team);
-			
-			player2.setCity(monachium);
-			player2.setNationality(polish);
-			player2.setPosition(position);
-			player2.setTeam(team);
-			
-			session.save(player1);
-			session.save(player2);
+			  int theIdH = 10; Team homeTeam = session.get(Team.class, theIdH);
+			  
+			  int theIdA = 11; Team awayTeam = session.get(Team.class, theIdA);
+			  
+			  Season season = new Season("2018/2019"); 
+			  League league = new League("Liga Mistrzów");
+			  
+			  //session.save(season); //session.save(league);
+			  
+			  Match match = new Match(date, "20:00", "Marciniak", 1.2, 3.2, 2.0);
+			  match.setAwayTeam(awayTeam); 
+			  match.setHomeTeam(homeTeam);
+			  match.setSeason(season); 
+			  match.setLeague(league);
+			  
+			  session.save(match);
+			  
+			  System.out.println(match.toString());
+			 
 			
 			//commit transaction
 			session.getTransaction().commit();

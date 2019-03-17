@@ -2,12 +2,18 @@ package pepe.entity;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="match")
@@ -18,18 +24,7 @@ public class Match {
 	@Column(name="idMatch")
 	private int id;
 	
-	@Column(name="team_idHomeTeam")
-	private int idHomeTeam;
-	
-	@Column(name="team_idAwayTeam")
-	private int idAwayTeam;
-	
-	@Column(name="season_idSeason")	
-	private int idSeason;
-	
-	@Column(name="league_idLeague")	
-	private int idLeague;
-	
+	@Temporal(TemporalType.DATE)
 	@Column(name="date")	
 	private Date date;
 	
@@ -48,16 +43,27 @@ public class Match {
 	@Column(name="bet2")
 	private double bet2;
 	
+	@OneToOne(cascade= {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+	@JoinColumn(name="team_idHomeTeam")
+	private Team homeTeam;
+	
+	@OneToOne(cascade= {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+	@JoinColumn(name="team_idAwayTeam")
+	private Team awayTeam;
+	
+	@OneToOne(cascade= {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+	@JoinColumn(name="season_idSeason")
+	private Season season;
+	
+	@OneToOne(cascade= {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+	@JoinColumn(name="league_idLeague")
+	private League league;
+	
 	public Match() {
 		
 	}
-
-	public Match(int idHomeTeam, int idAwayTeam, int idSeason, int idLeague, Date date, String hour, String referee,
-			double bet1, double betX, double bet2) {
-		this.idHomeTeam = idHomeTeam;
-		this.idAwayTeam = idAwayTeam;
-		this.idSeason = idSeason;
-		this.idLeague = idLeague;
+	
+	public Match(Date date, String hour, String referee, double bet1, double betX, double bet2) {
 		this.date = date;
 		this.hour = hour;
 		this.referee = referee;
@@ -74,36 +80,36 @@ public class Match {
 		this.id = id;
 	}
 
-	public int getIdHomeTeam() {
-		return idHomeTeam;
+	public Team getHomeTeam() {
+		return homeTeam;
 	}
 
-	public void setIdHomeTeam(int idHomeTeam) {
-		this.idHomeTeam = idHomeTeam;
+	public void setHomeTeam(Team homeTeam) {
+		this.homeTeam = homeTeam;
 	}
 
-	public int getIdAwayTeam() {
-		return idAwayTeam;
+	public Team getAwayTeam() {
+		return awayTeam;
 	}
 
-	public void setIdAwayTeam(int idAwayTeam) {
-		this.idAwayTeam = idAwayTeam;
+	public void setAwayTeam(Team awayTeam) {
+		this.awayTeam = awayTeam;
 	}
 
-	public int getIdSeason() {
-		return idSeason;
+	public Season getSeason() {
+		return season;
 	}
 
-	public void setIdSeason(int idSeason) {
-		this.idSeason = idSeason;
+	public void setSeason(Season season) {
+		this.season = season;
 	}
 
-	public int getIdLeague() {
-		return idLeague;
+	public League getLeague() {
+		return league;
 	}
 
-	public void setIdLeague(int idLeague) {
-		this.idLeague = idLeague;
+	public void setLeague(League league) {
+		this.league = league;
 	}
 
 	public Date getDate() {
@@ -156,9 +162,9 @@ public class Match {
 
 	@Override
 	public String toString() {
-		return "Match [id=" + id + ", idHomeTeam=" + idHomeTeam + ", idAwayTeam=" + idAwayTeam + ", idSeason="
-				+ idSeason + ", idLeague=" + idLeague + ", date=" + date + ", hour=" + hour + ", referee=" + referee
-				+ ", bet1=" + bet1 + ", betX=" + betX + ", bet2=" + bet2 + "]";
+		return "Match [id=" + id + ", date=" + date + ", hour=" + hour + ", referee=" + referee + ", bet1=" + bet1
+				+ ", betX=" + betX + ", bet2=" + bet2 + ", homeTeam=" + homeTeam + ", awayTeam=" + awayTeam
+				+ ", season=" + season + ", league=" + league + "]";
 	}
 	
 }
