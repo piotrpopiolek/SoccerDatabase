@@ -29,6 +29,7 @@ public class CreateDemo {
 		try {
 			
 			Country poland = new Country("Poland");
+			Country germany = new Country("Germany");
 			
 			City poznan = new City("Poznañ");
 			City warszawa = new City("Bia³ystok");
@@ -49,21 +50,21 @@ public class CreateDemo {
 			 * session.save(tempMatch); System.out.println("Saved the Match: " + tempMatch);
 			 */
 			
-			//session.save(poland);
+			session.save(germany);
 			
 			int theId = 15;
 			Country tempMatchRead = session.get(Country.class, theId);
 			
 			//System.out.println("Read the Cities : " + tCountry.getCities());
-			tempMatchRead.addCity(poznan);
-			tempMatchRead.addCity(warszawa);
+			//tempMatchRead.addCity(poznan);
+			//tempMatchRead.addCity(warszawa);
 			//System.out.println("Read the Cities : " + tCountry.getCities());
-			tempMatchRead.addCity(gdansk);
+			//tempMatchRead.addCity(gdansk);
 
-			session.save(tempMatchRead);
-			session.save(warszawa);
-			session.save(poznan);
-			session.save(gdansk);
+			//session.save(tempMatchRead);
+			//session.save(warszawa);
+			//session.save(poznan);
+			//session.save(gdansk);
 			//System.out.println("Read the Cities : " + tCountry.getCities());
 			
 			//System.out.println("\nSaving the Country : " + tCountry);
